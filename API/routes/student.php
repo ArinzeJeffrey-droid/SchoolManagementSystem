@@ -2,7 +2,7 @@
 //set up headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Methods: POST,GET,PUT,DELETE");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 //include the database connection
@@ -40,7 +40,21 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
         //if no students found
         echo json_encode(array("Message" => "No Students In The Database"));
     }
-}else{
+}else if($_SERVER['REQUEST_METHOD'] == "GET" && isset($_GET['student_id'])){
+    $student_id = $_GET['student_id'];
+    $fetch_student_query = "SELECT * FROM student WHERE student_id = '{$student_id}' ";
+    $send_query = mysqli_query($db, $fetch_student_query);
+    $num_of_rows = mysqli_num_rows($fetch_student_query);
+    if($num_of_rows > 0){
+        $result = mysqli_fetch_assoc($send_query);
+        http_response_code(200);
+        json_encode($result);
+    }else{
+        http_response_code(404);
+        echo json_encode(array("Message" => "Student With That ID doesn't exists"));
+    }
+}
+else{
     //if request method isn't valid
     http_response_code(405);
     echo json_encode(array("Message" => "Method Not Allowed"));
