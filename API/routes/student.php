@@ -56,7 +56,7 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
 }
 else{
     //if request method isn't valid
-    http_response_code(405);
+    http_response_code(400);
     echo json_encode(array("Message" => "Method Not Allowed"));
 }
 
