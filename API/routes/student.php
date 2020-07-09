@@ -40,9 +40,10 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
         //if no students found
         echo json_encode(array("Message" => "No Students In The Database"));
     }
-}else if($_SERVER['REQUEST_METHOD'] == "GET" && isset($_GET['student_id'])){
-    $student_id = $_GET['student_id'];
-    $fetch_student_query = "SELECT * FROM student WHERE student_id = '{$student_id}' ";
+}
+else if(isset($_GET['s_id'])){
+    $student_id = $_GET['s_id'];
+    $fetch_student_query = "SELECT * FROM student WHERE student_id = $s_id ";
     $send_query = mysqli_query($db, $fetch_student_query);
     $num_of_rows = mysqli_num_rows($fetch_student_query);
     if($num_of_rows > 0){
